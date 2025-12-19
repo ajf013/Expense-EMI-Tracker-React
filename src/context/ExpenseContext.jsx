@@ -72,12 +72,17 @@ export const ExpenseProvider = ({ children }) => {
 
     const addEmi = (emi) => {
         if (isSharedView) return;
-        setEmis([...emis, { ...emi, id: uuidv4(), paidMonths: 0 }]);
+        setEmis([...emis, { ...emi, id: uuidv4(), paidMonths: 0, isPaid: false }]);
     };
 
     const deleteEmi = (id) => {
         if (isSharedView) return;
         setEmis(emis.filter(e => e.id !== id));
+    };
+
+    const toggleEmiPaid = (id) => {
+        if (isSharedView) return;
+        setEmis(emis.map(e => e.id === id ? { ...e, isPaid: !e.isPaid } : e));
     };
 
     const addExpense = (expense) => {
@@ -114,7 +119,7 @@ export const ExpenseProvider = ({ children }) => {
     return (
         <ExpenseContext.Provider value={{
             salary, updateSalary,
-            emis, addEmi, deleteEmi,
+            emis, addEmi, deleteEmi, toggleEmiPaid,
             expenses, addExpense, deleteExpense,
             balance, totalEmiAmount, totalExpenses,
             clearAll,

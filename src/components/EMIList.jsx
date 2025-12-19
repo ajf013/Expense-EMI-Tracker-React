@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { useExpense } from '../context/ExpenseContext';
-import Button from './Button';
-import { FaTrash, FaPlus } from 'react-icons/fa';
-
 const EMIList = () => {
-    const { emis, addEmi, deleteEmi, isSharedView } = useExpense();
+    const { emis, addEmi, deleteEmi, isSharedView, toggleEmiPaid } = useExpense();
     const [showForm, setShowForm] = useState(false);
     const [newEmi, setNewEmi] = useState({ name: '', amount: '', totalMonths: '', startDate: '' });
 
@@ -88,6 +85,7 @@ const EMIList = () => {
                                 <th style={{ padding: '0.5rem' }}>Name</th>
                                 <th style={{ padding: '0.5rem' }}>Amount</th>
                                 <th style={{ padding: '0.5rem' }}>Status</th>
+                                <th style={{ padding: '0.5rem' }}>Paid?</th>
                                 <th style={{ padding: '0.5rem' }}>Action</th>
                             </tr>
                         </thead>
@@ -107,9 +105,28 @@ const EMIList = () => {
                                             </div>
                                         </td>
                                         <td style={{ padding: '1rem 0.5rem' }}>
-                                            <button onClick={() => deleteEmi(emi.id)} className="btn-icon" style={{ color: '#ef4444' }}>
-                                                <FaTrash />
+                                            <button
+                                                onClick={() => toggleEmiPaid(emi.id)}
+                                                style={{
+                                                    background: emi.isPaid ? '#22c55e' : 'rgba(255, 255, 255, 0.1)',
+                                                    border: '1px solid ' + (emi.isPaid ? '#22c55e' : 'var(--card-border)'),
+                                                    padding: '0.4rem 0.8rem',
+                                                    borderRadius: '20px',
+                                                    cursor: isSharedView ? 'default' : 'pointer',
+                                                    color: emi.isPaid ? 'white' : 'var(--text-color)',
+                                                    transition: 'all 0.2s'
+                                                }}
+                                                disabled={isSharedView}
+                                            >
+                                                {emi.isPaid ? 'Yes' : 'No'}
                                             </button>
+                                        </td>
+                                        <td style={{ padding: '1rem 0.5rem' }}>
+                                            {!isSharedView && (
+                                                <button onClick={() => deleteEmi(emi.id)} className="btn-icon" style={{ color: '#ef4444' }}>
+                                                    <FaTrash />
+                                                </button>
+                                            )}
                                         </td>
                                     </tr>
                                 );
