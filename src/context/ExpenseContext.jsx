@@ -64,6 +64,30 @@ export const ExpenseProvider = ({ children }) => {
         }
     }, [expenses, isSharedView]);
 
+    // Monthly Reset Logic
+    useEffect(() => {
+        if (isSharedView) return;
+
+        const currentMonthKey = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
+        const storedMonthKey = localStorage.getItem('lastVisitedMonth');
+
+        if (storedMonthKey && storedMonthKey !== currentMonthKey) {
+            // It's a new month! Reset transactional data.
+            // 1. Clear Expenses
+            setExpenses([]);
+
+            // 2. Reset EMI Paid status
+            // We need to use the functional update to ensure we have the latest state if it was just loaded
+            setEmis(prevEmis => prevEmis.map(e => ({ ...e, isPaid: false })));
+
+            // Optional: You could notify the user here via a toast
+            console.log("New month detected. Resetting data.");
+        }
+
+        // Update the stored month to today
+        localStorage.setItem('lastVisitedMonth', currentMonthKey);
+    }, [isSharedView]); // Run once on mount (and if share view changes, though unlikely to matter for persistent logic)
+
     // Actions
     const updateSalary = (amount) => {
         if (isSharedView) return; // Read only

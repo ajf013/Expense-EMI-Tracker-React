@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useExpense } from '../context/ExpenseContext';
+import Button from './Button';
+import { FaTrash, FaPlus } from 'react-icons/fa';
+
 const EMIList = () => {
     const { emis, addEmi, deleteEmi, isSharedView, toggleEmiPaid } = useExpense();
     const [showForm, setShowForm] = useState(false);
@@ -85,7 +88,7 @@ const EMIList = () => {
                                 <th style={{ padding: '0.5rem' }}>Name</th>
                                 <th style={{ padding: '0.5rem' }}>Amount</th>
                                 <th style={{ padding: '0.5rem' }}>Status</th>
-                                <th style={{ padding: '0.5rem' }}>Paid?</th>
+                                <th style={{ padding: '0.5rem' }}>Paid</th>
                                 <th style={{ padding: '0.5rem' }}>Action</th>
                             </tr>
                         </thead>
