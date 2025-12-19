@@ -4,7 +4,7 @@ import Button from './Button';
 import { FaTrash, FaPlus } from 'react-icons/fa';
 
 const EMIList = () => {
-    const { emis, addEmi, deleteEmi } = useExpense();
+    const { emis, addEmi, deleteEmi, isSharedView } = useExpense();
     const [showForm, setShowForm] = useState(false);
     const [newEmi, setNewEmi] = useState({ name: '', amount: '', totalMonths: '', startDate: '' });
 
@@ -39,9 +39,11 @@ const EMIList = () => {
         <div className="glass-card" style={{ padding: '1.5rem', marginBottom: '2rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                 <h3>Monthly EMIs</h3>
-                <Button onClick={() => setShowForm(!showForm)} className="btn-icon">
-                    <FaPlus />
-                </Button>
+                {!isSharedView && (
+                    <Button onClick={() => setShowForm(!showForm)} className="btn-icon">
+                        <FaPlus />
+                    </Button>
+                )}
             </div>
 
             {showForm && (

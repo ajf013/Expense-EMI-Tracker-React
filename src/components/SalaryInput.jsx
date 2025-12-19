@@ -1,52 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useExpense } from '../context/ExpenseContext';
-import Typewriter from 'typewriter-effect';
-import Button from './Button';
 
 const SalaryInput = () => {
-    const { salary, updateSalary } = useExpense();
-    const [isEditing, setIsEditing] = useState(salary === 0);
-    const [inputVal, setInputVal] = useState(salary);
-
-    const handleSave = () => {
-        updateSalary(inputVal);
-        setIsEditing(false);
-    };
-
-    if (!isEditing) {
-        return (
-            <div className="glass-card" style={{ padding: '2rem', textAlign: 'center', marginBottom: '2rem' }}>
-                <h3>Monthly Income</h3>
-                <h2 style={{ fontSize: '3rem', color: 'var(--primary-color)', margin: '1rem 0' }}>
-                    {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(salary)}
-                </h2>
-                <Button onClick={() => setIsEditing(true)} variant="secondary">Update Salary</Button>
-            </div>
-        );
-    }
+    const { salary, updateSalary, isSharedView } = useExpense();
 
     return (
-        <div className="glass-card" style={{ padding: '2rem', textAlign: 'center', marginBottom: '2rem' }}>
-            <h3 style={{ marginBottom: '1rem', minHeight: '1.5em' }}>
-                <Typewriter
-                    options={{
-                        strings: ['What is your monthly salary?', 'Enter your income details...'],
-                        autoStart: true,
-                        loop: true,
-                        delay: 50,
-                        deleteSpeed: 30,
-                    }}
-                />
-            </h3>
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', maxWidth: '400px', margin: '0 auto' }}>
-                <input
-                    type="number"
-                    className="glass-input"
-                    value={inputVal}
-                    onChange={(e) => setInputVal(e.target.value)}
-                    placeholder="e.g. 50000"
-                />
-                <Button onClick={handleSave}>Save</Button>
+        <div className="glass-card" style={{ padding: '1.5rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <label style={{ fontSize: '0.9rem', marginBottom: '0.5rem', opacity: 0.8 }}>Monthly Salary</label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span style={{ fontSize: '1.5rem', fontWeight: 600 }}>₹</span>
+                    <input
+                        type="number"
+                        value={salary}
+                        onChange={(e) => updateSalary(e.target.value)}
+                        className="glass-input"
+                        style={{ fontSize: '1.5rem', fontWeight: 600, width: '200px', background: 'transparent', border: 'none', padding: '0' }}
+                        disabled={isSharedView}
+                    />
+                </div>
             </div>
         </div>
     );

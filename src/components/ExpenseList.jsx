@@ -15,22 +15,22 @@ const CategoryIcon = ({ category }) => {
 
 const ExpenseList = () => {
     const { expenses, addExpense, deleteExpense } = useExpense();
-    const [desc, setDesc] = useState('');
     const [amount, setAmount] = useState('');
     const [category, setCategory] = useState('other');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!desc || !amount) return;
+        if (!amount) return;
+        // Default description based on category
+        const desc = category.charAt(0).toUpperCase() + category.slice(1);
         addExpense({ description: desc, amount: parseFloat(amount), category, date: new Date().toISOString() });
-        setDesc('');
         setAmount('');
     };
 
     return (
         <div className="glass-card" style={{ padding: '1.5rem' }}>
             <h3>Quick Expense</h3>
-            <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: 'minmax(100px, 1fr) 1fr 100px auto', gap: '0.5rem', marginBottom: '1.5rem', alignItems: 'center' }}>
+            <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: 'minmax(100px, 1fr) 1fr auto', gap: '0.5rem', marginBottom: '1.5rem', alignItems: 'center' }}>
                 <select
                     className="glass-input"
                     value={category}
@@ -42,12 +42,6 @@ const ExpenseList = () => {
                     <option value="utilities">Bills</option>
                     <option value="shopping">Shop</option>
                 </select>
-                <input
-                    className="glass-input"
-                    placeholder="Description"
-                    value={desc}
-                    onChange={e => setDesc(e.target.value)}
-                />
                 <input
                     className="glass-input"
                     type="number"
